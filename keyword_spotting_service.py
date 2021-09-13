@@ -23,7 +23,6 @@ class _Keyword_Spotting_Service:
     def predict(self, file_path):
         # extract MFCCs
         MFCCs = self.preprocess(file_path) # (# segments, # coeff)
-
         # covert 2d to 4d -> (# samples, # segments, # coeff, 1)
         MFCCs = MFCCs[np.newaxis, ..., np.newaxis]
 
@@ -34,32 +33,30 @@ class _Keyword_Spotting_Service:
 
         return predicted_keyword
 
-    def preprocess(self, file_path, n_mfcc=13, n_ftt=2048, hop_length=512):
+    def preprocess(self, file_path, n_mfcc=13, n_fft=2048, hop_length=512):
 
         # load audio file
         signal, sr = librosa.load(file_path)
 
         # ensure consistency in the file length
-        if len(signal) > SAMPLES_TO_CONSIDER:
+        if len(signal) >= SAMPLES_TO_CONSIDER:
             signal = signal[:SAMPLES_TO_CONSIDER]
 
             # extract MFCCs
-            MFCCs = librosa.feature.mfcc(signal, n_mfcc=n_mfcc, n_ftt=n_ftt, hop_length=hop_length)
+            MFCCs = librosa.feature.mfcc(signal, n_mfcc=n_mfcc, n_fft=n_fft, hop_length=hop_length)
 
         return MFCCs.T
 
 def Keyword_Spotting_Service():
-
     # ensure that we have only 1 instance of KSS
-    if _Keyword_Spotting_Service._instance is not None:
-        _Keyword_Spotting_Service._instance = Keyword_Spotting_Service()
+    if _Keyword_Spotting_Service._instance is None:
+        _Keyword_Spotting_Service._instance = _Keyword_Spotting_Service()
         _Keyword_Spotting_Service.model = keras.models.load_model(MODEL_PATH)
     return _Keyword_Spotting_Service._instance
 
 
 if __name__ == "__main__":
-    kss = _Keyword_Spotting_Service()
+    kss = Keyword_Spotting_Service()
     keyword1 = kss.predict("test/down.wav")
-    keyword2 = kss.predict("test/left.wav")
 
-    print(f"Predicted keyword 1 : {keyword1}, \n Predicted keyword 2 : {keyword2}")
+    print(f"Predicted keyword 1 : {keyword1}")

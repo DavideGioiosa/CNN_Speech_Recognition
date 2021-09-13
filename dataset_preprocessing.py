@@ -37,11 +37,11 @@ def prepare_dataset(dataset_path, json_path, n_mfcc = 13, hop_length=512, n_fft=
                     signal = signal[:SAMPLES_TO_CONSIDER]
 
                     #mfcc
-                    mfcc = librosa.feature.mfcc(signal, n_mfcc = n_mfcc,
+                    MFCCs = librosa.feature.mfcc(signal, n_mfcc = n_mfcc,
                                                 hop_length=hop_length, n_fft=n_fft)
 
                     #store in json
-                    data["MFCCs"].append(mfcc.tolist())
+                    data["MFCCs"].append(MFCCs.T.tolist())
                     data["labels"].append(i - 1)
                     data["files"].append(file_path)
                     print(f"Processing: {file_path}")
