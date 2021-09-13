@@ -13,7 +13,9 @@ speech recognition, 2017. Available from
 http://download.tensorflow.org/data/speech_commands_v0.01.tar.gz".
 
 
+#### Preproccesing
 
+Extraction of [MFFCs](https://en.wikipedia.org/wiki/Mel-frequency_cepstrum) from audio files containing a single word: ["down", "off", "on", "no", yes", "stop", "up", "right", "left", "go"].
 
 
 ***in progress***
