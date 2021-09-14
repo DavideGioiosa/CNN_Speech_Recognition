@@ -1,8 +1,8 @@
 import requests
 from constant_variables import TEST_AUDIO_FILE_PATH
 
-#URL = "http://127.0.0.1:5000/predict"
-URL = "http://127.0.0.1:5050/predict" #uwsgi
+URL = "http://127.0.0.1:5000/predict"
+#URL = "http://127.0.0.1:5050/predict" #uwsgi
 
 if __name__ == "__main__":
 
